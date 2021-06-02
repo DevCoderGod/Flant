@@ -16,22 +16,22 @@ services:
             - 15672:15672
         networks:
             - docker_network
-#     postgres:
-#     #   image: postgres:12.6-alpine
-#         build:
-#             context: ./PSQL
-#             dockerfile: Dockerfile
-#         environment:
-#             - POSTGRES_PASSWORD=secret
-#             - POSTGRES_HOST=localhost
-#             - POSTGRES_USER=postgres
-#             - POSTGRES_DB=profilerDB
-#         volumes:
-#             - ~/workspace/databases/pg_profiler_db:/var/lib/postgresql/data
-#         ports:
-#             - 5432:5432
-#         networks:
-#             - track-server_network
+    postgres:
+    #   image: postgres:12.6-alpine
+        build:
+            context: ./PSQL
+            dockerfile: Dockerfile
+        environment:
+            - POSTGRES_PASSWORD=secret
+            - POSTGRES_HOST=localhost
+            - POSTGRES_USER=postgres
+            - POSTGRES_DB=profilerDB
+        volumes:
+            - ~/workspace/databases/pg_profiler_tarot:/var/lib/postgresql/data
+        ports:
+            - 5432:5432
+        networks:
+            - docker_network
 #     leo-tr-server:
 #         build:
 #           context: .
