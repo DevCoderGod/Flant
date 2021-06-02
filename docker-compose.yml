@@ -1,0 +1,53 @@
+version: "3"
+services:
+    # consul:
+    #     image: consul:1.4.4
+    #     ports:
+    #         - 8500:8500
+    #     networks:
+    #         - track-server_network
+    rabbit:
+        image: rabbitmq:3.7.3-management
+        volumes:
+            - ./rabbit-config/definitions.json:/opt/definitions.json:ro
+            - ./rabbit-config/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro     
+        ports:
+            - 5672:5672
+            - 15672:15672
+        networks:
+            - docker_network
+#     postgres:
+#     #   image: postgres:12.6-alpine
+#         build:
+#             context: ./PSQL
+#             dockerfile: Dockerfile
+#         environment:
+#             - POSTGRES_PASSWORD=secret
+#             - POSTGRES_HOST=localhost
+#             - POSTGRES_USER=postgres
+#             - POSTGRES_DB=profilerDB
+#         volumes:
+#             - ~/workspace/databases/pg_profiler_db:/var/lib/postgresql/data
+#         ports:
+#             - 5432:5432
+#         networks:
+#             - track-server_network
+#     leo-tr-server:
+#         build:
+#           context: .
+#           dockerfile: Dockerfile
+#         environment:
+#            - CONSUL_HTTP_ADDR=consul:8500
+#         ports:
+#            - "0.0.0.0:8080:8080"
+#         depends_on:
+#           - consul
+#           - rabbit
+#           - postgres
+#         restart: "no"
+#         networks: 
+#             - track-server_network
+# volumes: 
+#     PSQLdata:
+networks: 
+    docker_network:
