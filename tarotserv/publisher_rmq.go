@@ -9,12 +9,12 @@ import (
 
 // RmqPublisher is the RabbitMQ publisher implementation.
 type RmqPublisher struct {
-	channel *amqp.Channel
-	queue   string
+	channel  *amqp.Channel
+	exchange string
 }
 
 // NewRmqPublisher creates new RmqPublisher instance.
-func NewRmqPublisher(uri, queue string) (res *RmqPublisher, err error) {
+func NewRmqPublisher(uri, exchange string) (res *RmqPublisher, err error) {
 	connection, err := amqp.Dial(uri)
 	if err != nil {
 		return
@@ -23,8 +23,8 @@ func NewRmqPublisher(uri, queue string) (res *RmqPublisher, err error) {
 	channel, err := connection.Channel()
 
 	return &RmqPublisher{
-		channel: channel,
-		queue:   queue,
+		channel:  channel,
+		exchange: exchange,
 	}, err
 }
 
@@ -38,8 +38,8 @@ func (rp RmqPublisher) Publish(e Event) error {
 	}
 
 	return rp.channel.Publish(
-		"tracking",
-		"tracking",
+		rp.exchange,
+		rp.exchange,
 		false,
 		false,
 		amqp.Publishing{

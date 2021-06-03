@@ -2,7 +2,7 @@ package main
 
 // Config contains application configuration.
 type Config interface {
-	GetQueueName() string
+	GetExchangeName() string
 	GetRmqURI() string
 	GetServerAddress() string
 	GetPSQLURI() string
@@ -15,11 +15,11 @@ type ConfJSON struct {
 	PSQLURI       string
 	ServerAddress string
 	RmqURI        string
-	QueueName     string
+	ExchangeName  string
 }
 
-func (c ConfJSON) GetQueueName() string {
-	return c.QueueName
+func (c ConfJSON) GetExchangeName() string {
+	return c.ExchangeName
 }
 func (c ConfJSON) GetRmqURI() string {
 	return c.RmqURI

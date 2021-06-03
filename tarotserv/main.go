@@ -12,10 +12,10 @@ func main() {
 	cfg.PSQLURI = "host=postgres port=5432 user=postgres password=secret dbname=profilerDB sslmode=disable"
 	cfg.ServerAddress = ":8080"
 	cfg.RmqURI = "amqp://guest:guest@rabbit:5672/xr"
-	cfg.QueueName = "tracking"
+	cfg.ExchangeName = "tracking"
 
 	// Prepare publisher
-	publisher, err := NewRmqPublisher(cfg.RmqURI, cfg.QueueName)
+	publisher, err := NewRmqPublisher(cfg.GetRmqURI(), cfg.GetExchangeName())
 	if err != nil {
 		fmt.Println("Prepare publisher err = ", err)
 	}
