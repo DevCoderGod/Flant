@@ -1,4 +1,4 @@
-package PSQL
+package main
 
 import (
 	"database/sql"
@@ -15,27 +15,21 @@ type PSQL struct {
 	connect *sql.DB
 }
 
+// NewPSQL opens connection
 func NewPSQL(config string) (db *PSQL, err error) {
-	fmt.Println("PSQL.Check")
-
 	connect, err := sql.Open("postgres", config)
 	if err != nil {
-		fmt.Printf("NewPSQL.Open err =  %v\n", err)
-		return nil, err
+		return nil, fmt.Errorf("connect.Open error:  %v\n", err)
 	}
 
-	fmt.Println("PSQL.Ping start")
 	err = connect.Ping()
 	if err != nil {
-		fmt.Printf("PSQL.Ping err =  %v\n", err)
-		return nil, err
+		return nil, fmt.Errorf("database.Ping error:  %v\n", err)
 	}
-	fmt.Println("PSQL.Ping OK")
-
-	fmt.Println("PSQL.Check OK")
 	return &PSQL{
 		connect: connect,
-		config:  config}, nil
+		config:  config,
+	}, nil
 }
 
 func (db *PSQL) Query(query string) (*sql.Rows, error) {
@@ -61,4 +55,9 @@ func (db *PSQL) Exec(query string, time time.Time) bool {
 		return false
 	}
 	return true
+}
+
+func (db *PSQL) Close() {
+	db.connect.Close()
+	return
 }
