@@ -15,6 +15,23 @@ type PSQL struct {
 	connect *sql.DB
 }
 
+// CheckPSQL checks database connection
+func CheckPSQL(uri string) error {
+	var outErr error
+	for i := 1; i < 10; i++ {
+		fmt.Printf("Ping to database #%d\n", i)
+		db, err := NewPSQL(uri)
+		if err == nil {
+			db.Close()
+			fmt.Println("database ok!")
+			return nil
+		}
+		time.Sleep(time.Second * time.Duration(2))
+		outErr = err
+	}
+	return fmt.Errorf("database is unavailable. error: %v", outErr)
+}
+
 // NewPSQL opens connection
 func NewPSQL(config string) (db *PSQL, err error) {
 	connect, err := sql.Open("postgres", config)

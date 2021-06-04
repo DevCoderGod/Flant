@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/streadway/amqp"
 )
@@ -11,6 +12,23 @@ import (
 type RmqPublisher struct {
 	channel  *amqp.Channel
 	exchange string
+}
+
+// CheckRMQ checks RMQ connection
+func CheckRMQ(uri string) error {
+	var outErr error
+	for i := 1; i < 10; i++ {
+		fmt.Printf("Ping to RMQ #%d\n", i)
+		connection, err := amqp.Dial(uri)
+		if err == nil {
+			connection.Close()
+			fmt.Println("RMQ ok!")
+			return nil
+		}
+		time.Sleep(time.Second * time.Duration(2))
+		outErr = err
+	}
+	return fmt.Errorf("RMQ is unavailable. error: %v", outErr)
 }
 
 // NewRmqPublisher creates new RmqPublisher instance.

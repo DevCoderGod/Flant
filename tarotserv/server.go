@@ -25,7 +25,6 @@ func newServer(config Config, publisher Publisher) *Server {
 // Start runs server.
 func (ts *Server) Start() error {
 	http.HandleFunc("/", ts.rootHandler)
-	fmt.Println(ts)
 	return http.ListenAndServe(ts.config.GetServerAddress(), nil)
 }
 
